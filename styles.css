@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: gray;
+}
+
+#map {
+    width: 600px; 
+    height: 400px;
+    background-color: lightblue;
+}
+
+.container{
+    display: flex;
+}
