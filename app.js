@@ -1,4 +1,4 @@
-import mapboxgl from './node_modules/mapbox-gl';
+import mapboxgl from './node_modules/mapbox-gl/dist/mapbox-gl.js';
 
 mapboxgl.accessToken = 'CHECK ENV';
 var map = new mapboxgl.Map({
