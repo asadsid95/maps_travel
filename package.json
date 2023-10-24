@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "leaflet": "^1.9.4",
     "mapbox-gl": "^2.15.0"
   }
