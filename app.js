@@ -1,8 +1,7 @@
-// import '/node_modules/leaflet/dist/leaflet.css'
-// import '/node_modules/leaflet/dist/leaflet.js'
-// import L from 'leaflet'
+require('dotenv').config()
 
-// require('dotenv').config()
+const apiKey=process.env.PUBLIC
+
 
 var map = L.map('map').setView([43.65, -79.39], 1);
 
@@ -21,7 +20,7 @@ formElement.addEventListener('submit', (event) => {
 
     // console.log(mapbox_accessToken)
     
-    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${refinedData.country}.json?access_token=pk.eyJ1IjoiYXNhZHMyMyIsImEiOiJjbG1ud2pyZzkwem95MmpuNXdxNW1wczE1In0.rVhuUWrEFEMpYFyaaVmt4Q`)
+    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${refinedData.country}.json?access_token=${apiKey}`)
     .then(res => res.json())
     .then(res => {
 
