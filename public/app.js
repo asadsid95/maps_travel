@@ -1,11 +1,9 @@
 // import "./node_modules/leaflet/dist/leaflet.css"; // Import Leaflet's CSS
-// import "./node_modules/leaflet/dist/leaflet.js"; // Import Leaflet
+import "../node_modules/leaflet/dist/leaflet.js"; // Import Leaflet
 
 let COORDINATES_TORONTO = [43.65, -79.39];
-let ACCESS_TOKEN =
-  "pk.eyJ1IjoiYXNhZHMyMyIsImEiOiJjbG1ud2pyZzkwem95MmpuNXdxNW1wczE1In0.rVhuUWrEFEMpYFyaaVmt4Q";
 
-let map = L.map("map").setView(COORDINATES_TORONTO, 2);
+let map = L.map("map").setView(COORDINATES_TORONTO, 4);
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
@@ -20,21 +18,7 @@ formElement.addEventListener("submit", async (event) => {
   const formData = new FormData(event.target);
   const refinedData = Object.fromEntries(formData.entries());
 
-  // fetch(
-  //   `https://api.mapbox.com/geocoding/v5/mapbox.places/${refinedData.country}.json?access_token=${ACCESS_TOKEN}`
-  // )
-  //   .then((res) => res.json())
-  //   .then((res) => {
-  //     const coordinates = res.features[0].geometry.coordinates;
-
-  //     L.marker([coordinates[1], coordinates[0]]).addTo(map);
-
-  //     map.setView([coordinates[1], coordinates[0]], 1);
-  //   })
-  //   .catch((err) => console.log(err));
-
-  //-----------
-
+  // call to backend server
   const response = await fetch("http://localhost:3000/process", {
     method: "POST",
     headers: {
@@ -44,9 +28,14 @@ formElement.addEventListener("submit", async (event) => {
   });
 
   const result = await response.json();
-  console.log(result);
+  const corrected_coordinates = [
+    result.corrected_coordinates[1],
+    result.corrected_coordinates[0],
+  ];
 
-  console.log(response);
+  L.marker(corrected_coordinates).addTo(map);
+
+  map.setView(corrected_coordinates, 1);
 });
 
 let marker = L.circle([43.65, -79.39], {
