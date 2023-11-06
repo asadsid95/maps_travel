@@ -1,8 +1,5 @@
 // import "./node_modules/leaflet/dist/leaflet.css"; // Import Leaflet's CSS
-import "./node_modules/leaflet/dist/leaflet.js"; // Import Leaflet
-
-// let dotenv = require("dotenv").config();
-// let ACCESS_TOKEN = process.env.ACCESS_TOKEN;
+// import "./node_modules/leaflet/dist/leaflet.js"; // Import Leaflet
 
 let COORDINATES_TORONTO = [43.65, -79.39];
 let ACCESS_TOKEN =
@@ -17,24 +14,39 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 }).addTo(map);
 
 let formElement = document.getElementById("locationInput");
-formElement.addEventListener("submit", (event) => {
+formElement.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const formData = new FormData(event.target);
   const refinedData = Object.fromEntries(formData.entries());
 
-  fetch(
-    `https://api.mapbox.com/geocoding/v5/mapbox.places/${refinedData.country}.json?access_token=${ACCESS_TOKEN}`
-  )
-    .then((res) => res.json())
-    .then((res) => {
-      const coordinates = res.features[0].geometry.coordinates;
+  // fetch(
+  //   `https://api.mapbox.com/geocoding/v5/mapbox.places/${refinedData.country}.json?access_token=${ACCESS_TOKEN}`
+  // )
+  //   .then((res) => res.json())
+  //   .then((res) => {
+  //     const coordinates = res.features[0].geometry.coordinates;
 
-      L.marker([coordinates[1], coordinates[0]]).addTo(map);
+  //     L.marker([coordinates[1], coordinates[0]]).addTo(map);
 
-      map.setView([coordinates[1], coordinates[0]], 1);
-    })
-    .catch((err) => console.log(err));
+  //     map.setView([coordinates[1], coordinates[0]], 1);
+  //   })
+  //   .catch((err) => console.log(err));
+
+  //-----------
+
+  const response = await fetch("http://localhost:3000/process", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(refinedData),
+  });
+
+  const result = await response.json();
+  console.log(result);
+
+  console.log(response);
 });
 
 let marker = L.circle([43.65, -79.39], {
@@ -43,6 +55,8 @@ let marker = L.circle([43.65, -79.39], {
   fillOpacity: 0.5,
   radius: 500,
 }).addTo(map);
+
+function user() {}
 
 // -----------------------
 
