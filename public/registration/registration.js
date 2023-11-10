@@ -2,31 +2,48 @@ const registrationForm = document.getElementById("registrationForm");
 registrationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const name = document.getElementById("name").value;
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  // console.log(username);
 
   // client-side validation
-  if (name.trim() === "" || name.length < 2) {
+  if (
+    username.trim() === "" ||
+    username.length < 2 ||
+    password.trim() === "" ||
+    password.length < 2
+  ) {
     alert("username must not be empty or be greater than 2 characters");
     return;
   }
-
-  //   const visitedCountries = document
-  //     .getElementById("visitedCountries")
-  //     .value.split(",");
+  // Prepare data for the backend
+  const formData = {
+    username: username,
+    password: password,
+  };
 
   // Make a POST request to the server for user registration
-  const response = await fetch("http://localhost:3000/registration", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name }),
-  });
+  try {
+    const response = await fetch("http://localhost:3000/registration", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ formData }),
+    });
 
-  if (response.status !== 200) {
-    // Registration successful
-    window.location.href = "/public/index.html";
-    console.log("Registration successful");
-  } else {
-    // Registration failed
-    console.error(`Registration failed, ${name} already exists as users`);
+    console.log(response);
+
+    if (response.ok) {
+      // Registration successful
+      // window.location.href = "/public/index.html";
+      alert("Registration successful");
+    } else {
+      // Registration failed
+      const data = await response.json();
+      alert(`Registration failed: ${data.error}`);
+    }
+  } catch (error) {
+    console.error("Error during registration:", error);
+    alert("An error occurred during registration. Please try again.");
   }
 });

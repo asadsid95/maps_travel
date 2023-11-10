@@ -8,12 +8,25 @@
     <div id="content">
       <h1>User Registration</h1>
       <form id="registrationForm">
-        <input type="text" id="name" placeholder="Name" />
-        <!-- <input
-                type="text"
-                id="visitedCountries"
-                placeholder="Visited Countries (comma-separated)"
-                /> -->
+        <label for="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Name"
+          required
+          minlength="2"
+        />
+
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          minlength="2"
+        />
+
         <button type="submit">Register</button>
       </form>
     </div>

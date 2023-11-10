@@ -17,20 +17,29 @@ app.use(cors());
 app.use(express.json());
 
 // table creation if not existing
+const checkTableQuery =
+  "SELECT name FROM sqlite_master WHERE type='table' AND name='users'";
+
 db.serialize(() => {
-  db.get(
-    "SELECT name FROM sqlite_master WHERE type='table' AND name='users'",
-    (err, row) => {
-      if (!row) {
-        // The 'users' table does not exist, so create it
-        db.run(
-          "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT UNIQUE, visitedCountries TEXT)"
-        );
-      } else {
-        return err;
-      }
+  db.get(checkTableQuery, (err, row) => {
+    if (err) {
+      console.error("Error checking for users table:", err);
+    } else if (!row) {
+      // The 'users' table does not exist, so create it
+      const createTableQuery =
+        "CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT UNIQUE NOT NULL, password TEXT NOT NULL)";
+
+      db.run(createTableQuery, (err) => {
+        if (err) {
+          console.error("Error creating users table:", err);
+        } else {
+          console.log("Users table created successfully");
+        }
+      });
+    } else {
+      console.log("Users table already exists");
     }
-  );
+  });
 });
 
 async function callGeocoding(location) {
@@ -58,31 +67,31 @@ app.post("/process", async (req, res) => {
 
 // user registration
 app.post("/registration", (req, res) => {
-  const name = req.body.name;
+  const { username, password } = req.body.formData;
 
-  if (name.trim() === "" || name.length < 2) {
-    return res
-      .status(400)
-      .json({ error: "user name is less than 2 characters" });
+  // server-end side data validation
+  if (
+    username.trim() === "" ||
+    username.length < 2 ||
+    password.trim() === "" ||
+    password.length < 2
+  ) {
+    alert("username must not be empty or be greater than 2 characters");
+    return res.status(400).json({ error: "Invalid data" });
   }
 
-  /*   
+  /*
   send req.body to database for user creation
   ...
   */
-  try {
-    user_table.insertUser(db, name);
 
-    res.status(200).json({ message: "User successfully created" });
-  } catch (err) {
-    return res
-      .status(400)
-      .json({ error: "[SERVER_ERROR] - Database operation did not complete" });
-  }
+  user_table.insertUser(db, username, password, (err) => {
+    if (err) {
+      return res.status(500).json({ error: "Database error" });
+    }
 
-  // redirect user to the main page
-  // res.sendFile(path.join(__dirname, "/public/index.html"));
-  // res.redirect("http://localhost:5500/public");
+    res.status(200).json({ success: true });
+  });
 });
 
 app.listen(port, () => {
