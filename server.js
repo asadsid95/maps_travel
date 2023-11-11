@@ -94,6 +94,21 @@ app.post("/registration", (req, res) => {
   });
 });
 
+// user authentication
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
+
+  if (
+    username.trim() === "" ||
+    username.length < 2 ||
+    password.trim() === "" ||
+    password.length < 2
+  ) {
+    alert("username must not be empty or be greater than 2 characters");
+    return res.status(400).json({ error: "Invalid data" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`server running on port ${port}`);
 });
