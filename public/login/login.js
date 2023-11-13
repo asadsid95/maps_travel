@@ -18,9 +18,13 @@ async function handleSubmit(event) {
       },
       body: JSON.stringify({ username, password }),
     });
-    console.log(response);
+    const readable_res = await response.json();
+
+    window.location.href = "/public/index.html";
+    alert("Authentication successful");
+    // console.log(readable_res);
   } catch (err) {
-    console.log(err);
+    console.log("[FE_ERROR]:", err);
     return err;
   }
 

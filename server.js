@@ -107,6 +107,23 @@ app.post("/login", (req, res) => {
     alert("username must not be empty or be greater than 2 characters");
     return res.status(400).json({ error: "Invalid data" });
   }
+
+  /* 
+    check if user exists
+  */
+  user_table.checkUser(db, username, password, (err, isAuthenticated) => {
+    if (err) {
+      return res.status(500).json({ error: "Database error" });
+    }
+
+    if (isAuthenticated) {
+      res.status(200).json({ success: true });
+    } else {
+      res.status(401).json({ success: false, error: "Authentication failed" });
+    }
+
+    // res.status(200).json({ success: true });
+  });
 });
 
 app.listen(port, () => {

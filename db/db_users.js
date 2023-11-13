@@ -16,6 +16,26 @@ function insertUser(db, username, password, callback) {
   });
 }
 
+function checkUser(db, username, password, callback) {
+  const checkQuery = db.prepare("SELECT * FROM users WHERE username = ?");
+
+  checkQuery.get(username, (err, row) => {
+    if (err) {
+      console.error("Error finding user:", err);
+      callback(err, false);
+    } else {
+      if (row) {
+        console.log("User found successfully");
+        callback(null, true);
+      } else {
+        console.log("User not found");
+        callback(null, false);
+      }
+    }
+  });
+}
+
 module.exports = {
   insertUser,
+  checkUser,
 };
