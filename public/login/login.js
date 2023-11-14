@@ -21,7 +21,7 @@ async function handleSubmit(event) {
     const readable_res = await response.json();
 
     window.location.href = "/public/index.html";
-    alert("Authentication successful");
+    // alert("Authentication successful");
     // console.log(readable_res);
   } catch (err) {
     console.log("[FE_ERROR]:", err);

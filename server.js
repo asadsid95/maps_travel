@@ -111,19 +111,26 @@ app.post("/login", (req, res) => {
   /* 
     check if user exists
   */
-  user_table.checkUser(db, username, password, (err, isAuthenticated) => {
-    if (err) {
-      return res.status(500).json({ error: "Database error" });
-    }
+  user_table.checkUser(
+    db,
+    username,
+    password,
+    (err, isAuthenticated, token) => {
+      if (err) {
+        return res.status(500).json({ error: "Database error" });
+      }
 
-    if (isAuthenticated) {
-      res.status(200).json({ success: true });
-    } else {
-      res.status(401).json({ success: false, error: "Authentication failed" });
-    }
+      if (isAuthenticated) {
+        res.status(200).json({ success: true, token });
+      } else {
+        res
+          .status(401)
+          .json({ success: false, error: "Authentication failed" });
+      }
 
-    // res.status(200).json({ success: true });
-  });
+      // res.status(200).json({ success: true });
+    }
+  );
 });
 
 app.listen(port, () => {
