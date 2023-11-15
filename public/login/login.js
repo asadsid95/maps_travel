@@ -20,12 +20,33 @@ async function handleSubmit(event) {
     });
     const readable_res = await response.json();
 
-    window.location.href = "/public/index.html";
+    console.log(readable_res.token);
+
+    // placing token in local storage
+    localStorage.setItem("accessToken", readable_res.token);
+
+    // window.location.href = "/public/index.html";
     // alert("Authentication successful");
-    // console.log(readable_res);
   } catch (err) {
     console.log("[FE_ERROR]:", err);
     return err;
+  }
+
+  let getToken = localStorage.getItem("accessToken");
+
+  try {
+    const protected_route = await fetch("http://localhost:3000/protected", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken}`,
+      },
+    });
+
+    const readable_res = await protected_route.json();
+    console.log(readable_res);
+  } catch (err) {
+    console.log(err);
   }
 
   // send to backend

@@ -133,6 +133,14 @@ app.post("/login", (req, res) => {
   );
 });
 
+app.get("/protected", (req, res) => {
+  // console.log(req);
+
+  console.log(req.headers.authorization);
+
+  return res.status(200).json({ message: "Protected route" });
+});
+
 app.listen(port, () => {
   console.log(`server running on port ${port}`);
 });
