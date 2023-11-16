@@ -1,5 +1,11 @@
 // import "./node_modules/leaflet/dist/leaflet.css"; // Import Leaflet's CSS
-import "../node_modules/leaflet/dist/leaflet.js"; // Import Leaflet
+
+/* 
+  commented out the import as it's included in script tag in index.html with /libs as root
+
+ import "../node_modules/leaflet/dist/leaflet.js"; // Import Leaflet
+
+*/
 
 let COORDINATES_TORONTO = [43.65, -79.39];
 

@@ -18,6 +18,9 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// middleware to server static files from node_modules for leaflet
+app.use("/libs", express.static(path.join(__dirname, "node_modules")));
+
 // middleware to serve associated css, js files
 app.use(express.static(path.join(__dirname, "public")));
 
