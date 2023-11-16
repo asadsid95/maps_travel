@@ -1,7 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
-dotenv.config();
 const cors = require("cors");
+const path = require("path");
+
+dotenv.config();
 const app = express();
 
 const sqlite3 = require("sqlite3").verbose();
@@ -15,6 +17,9 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+// middleware to serve associated css, js files
+app.use(express.static(path.join(__dirname, "public")));
 
 // table creation if not existing
 const checkTableQuery =
@@ -56,6 +61,11 @@ async function callGeocoding(location) {
     console.log(err);
   }
 }
+
+app.get("/", (req, res) => {
+  console.log(path.join(__dirname, "/public/index.html"));
+  return res.sendFile(path.join(__dirname, "/public/index.html"));
+});
 
 app.post("/process", async (req, res) => {
   const location = req.body;
