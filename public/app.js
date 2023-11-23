@@ -1,9 +1,9 @@
 // import "./node_modules/leaflet/dist/leaflet.css"; // Import Leaflet's CSS
 
 /* 
-  commented out the import as it's included in script tag in index.html with /libs as root
+commented out the import as it's included in script tag in index.html with /libs as root
 
- import "../node_modules/leaflet/dist/leaflet.js"; // Import Leaflet
+import "../node_modules/leaflet/dist/leaflet.js"; // Import Leaflet
 
 */
 

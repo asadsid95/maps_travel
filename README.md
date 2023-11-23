@@ -12,6 +12,8 @@ To run the backend:
 
 > node server.js
 
-To run the frontend:
+---
 
->
+Current issues:
+
+- Not sure how importing libraries/packages when deploying has been done using middleware to add it to another directory
