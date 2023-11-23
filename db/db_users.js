@@ -21,7 +21,7 @@ function insertUser(db, username, password, callback) {
 function checkUser(db, username, password, callback) {
   const checkQuery = db.prepare("SELECT * FROM users WHERE username = ?");
 
-  const secretKey = process.env.SECRET_JWT;
+  const secretKey = process.env.SECRET_JWT || "hello-as-hard-coded";
 
   checkQuery.get(username, (err, row) => {
     if (err) {
