@@ -68,25 +68,19 @@ async function callGeocoding(location) {
 app.get("/", (req, res) => {
   return res.sendFile(path.join(__dirname, "/public/index.html"));
 });
-
-// Serve registration HTML
-app.get("/registration", (req, res) => {
-  return res.sendFile(
-    path.join(__dirname, "/public/registration/registration.html")
-  );
-});
-
-// Serve login HTML
-app.get("/login", (req, res) => {
-  return res.sendFile(path.join(__dirname, "/public/login/login.html"));
-});
-
 app.post("/process", async (req, res) => {
   const location = req.body;
 
   let corrected_coordinates = await callGeocoding(location);
 
   res.json({ corrected_coordinates: corrected_coordinates });
+});
+
+// Serve registration HTML
+app.get("/registration", (req, res) => {
+  return res.sendFile(
+    path.join(__dirname, "/public/registration/registration.html")
+  );
 });
 
 // user registration
@@ -116,6 +110,11 @@ app.post("/registration", (req, res) => {
 
     res.status(200).json({ success: true });
   });
+});
+
+// Serve login HTML
+app.get("/login", (req, res) => {
+  return res.sendFile(path.join(__dirname, "/public/login/login.html"));
 });
 
 // user authentication
