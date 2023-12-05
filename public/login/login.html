@@ -1,24 +1,35 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Sign in</title>
+    <link href="/output.css" rel="stylesheet" />
+  </head>
+  <body class="bg-slate-500">
+    <div id="">
+      <h1>Sign in</h1>
+      <form id="loginForm">
+        <label for="username" class="">Username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Name"
+          required
+          minlength="2"
+        />
 
-<head>
-  <title>Sign in</title>
-</head>
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          minlength="2"
+        />
 
-<body class="">
-  <div id="content">
-    <h1>Sign in</h1>
-    <form id="loginForm">
-      <label for="username" class="text-3xl">Username:</label>
-      <input type="text" id="username" name="username" placeholder="Name" required minlength="2" />
-
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required minlength="2" />
-
-      <button type="submit">Login</button>
-    </form>
-  </div>
-  <script src="login.js"></script>
-</body>
-
+        <button type="submit">Login</button>
+      </form>
+    </div>
+    <script src="login.js"></script>
+  </body>
 </html>
