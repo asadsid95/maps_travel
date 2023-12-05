@@ -5,11 +5,11 @@ body {
 }
 
 #map {
-    width: 600px; 
+    width: 600px;
     height: 400px;
     background-color: lightblue;
 }
 
-.container{
+.container {
     display: flex;
 }

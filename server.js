@@ -23,6 +23,7 @@ app.use("/libs", express.static(path.join(__dirname, "node_modules")));
 
 // middleware to serve associated css, js files
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "dist")));
 
 // table creation if not existing
 const checkTableQuery =
