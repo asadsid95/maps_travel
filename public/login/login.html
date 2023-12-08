@@ -5,27 +5,32 @@
     <link href="/output.css" rel="stylesheet" />
   </head>
   <body class="bg-slate-500">
-    <div id="">
-      <h1>Sign in</h1>
-      <form id="loginForm">
-        <label for="username" class="">Username:</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          placeholder="Name"
-          required
-          minlength="2"
-        />
-
-        <label for="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          required
-          minlength="2"
-        />
+    <div
+      class="flex flex-col justify-center items-center bg-gray-700 w-screen h-screen text-center"
+    >
+      <h1 class="text-2xl">Sign in</h1>
+      <form id="loginForm" class="flex flex-col">
+        <div class="flex">
+          <label for="username" class="">Username:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Name"
+            required
+            minlength="2"
+          />
+        </div>
+        <div class="flex">
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            minlength="2"
+          />
+        </div>
 
         <button type="submit">Login</button>
       </form>
