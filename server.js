@@ -74,7 +74,7 @@ app.post("/process", async (req, res) => {
 
   let corrected_coordinates = await callGeocoding(location);
 
-  res.json({ corrected_coordinates: corrected_coordinates });
+  return res.json({ corrected_coordinates: corrected_coordinates });
 });
 
 // Serve registration HTML
