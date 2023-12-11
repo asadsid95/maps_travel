@@ -20,13 +20,13 @@ async function handleSubmit(event) {
     });
     const readable_res = await response.json();
 
-    console.log(readable_res.token);
+    // console.log(readable_res.token);
 
     // placing token in local storage
     localStorage.setItem("accessToken", readable_res.token);
 
-    // window.location.href = "/public/index.html";
-    // alert("Authentication successful");
+    window.location.href = "/public/index.html";
+    alert("Authentication successful");
   } catch (err) {
     console.log("[FE_ERROR]:", err);
     return err;
