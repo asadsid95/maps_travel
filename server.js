@@ -67,7 +67,7 @@ async function callGeocoding(location) {
 }
 
 app.get("/", (req, res) => {
-  return res.sendFile(path.join(__dirname, "/public/login/login.html"));
+  return res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 app.post("/process", async (req, res) => {
   const location = req.body;
