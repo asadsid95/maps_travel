@@ -25,7 +25,7 @@ async function handleSubmit(event) {
     // placing token in local storage
     localStorage.setItem("accessToken", readable_res.token);
 
-    window.location.href = "/public/index.html";
+    window.location.href = "/";
     alert("Authentication successful");
   } catch (err) {
     console.log("[FE_ERROR]:", err);
