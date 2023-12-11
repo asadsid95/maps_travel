@@ -35,7 +35,7 @@ registrationForm.addEventListener("submit", async (event) => {
 
     if (response.ok) {
       // Registration successful
-      window.location.href = "/public/login";
+      window.location.href = "/login";
       alert("Registration successful");
     } else {
       // Registration failed
