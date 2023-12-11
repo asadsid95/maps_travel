@@ -11,7 +11,7 @@ async function handleSubmit(event) {
   }
 
   try {
-    const response = await fetch("http://gocreate.ca:3000/login", {
+    const response = await fetch("https://www.gocreate.ca:3000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,13 +35,16 @@ async function handleSubmit(event) {
   let getToken = localStorage.getItem("accessToken");
 
   try {
-    const protected_route = await fetch("http://localhost:3000/protected", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getToken}`,
-      },
-    });
+    const protected_route = await fetch(
+      "https://www.gocreate.ca:3000/protected",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken}`,
+        },
+      }
+    );
 
     const readable_res = await protected_route.json();
     console.log(readable_res);
