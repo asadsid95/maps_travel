@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
+const bcrypt = require("bcrypt");
 
 dotenv.config();
 const app = express();
@@ -85,8 +86,9 @@ app.get("/registration", (req, res) => {
 });
 
 // user registration
-app.post("/registration", (req, res) => {
+app.post("/registration", async (req, res) => {
   const { username, password } = req.body.formData;
+  let hashed_password;
 
   // server-end side data validation
   if (
@@ -95,7 +97,7 @@ app.post("/registration", (req, res) => {
     password.trim() === "" ||
     password.length < 2
   ) {
-    alert("username must not be empty or be greater than 2 characters");
+    // alert("username must not be empty or be greater than 2 characters");
     return res.status(400).json({ error: "Invalid data" });
   }
 
@@ -104,13 +106,20 @@ app.post("/registration", (req, res) => {
   ...
   */
 
-  user_table.insertUser(db, username, password, (err) => {
-    if (err) {
-      return res.status(500).json({ error: "Database error" });
-    }
+  try {
+    hashed_password = await bcrypt.hash(password, 10);
+  } catch (err) {
+    console.error("Error hashing password: ", err);
+  }
 
-    res.status(200).json({ success: true });
-  });
+  try {
+    // Send req.body to the database for user creation
+    await user_table.insertUser(db, username, hashed_password);
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error("Error during user registration:", err);
+    return res.status(500).json({ error: "Database error" });
+  }
 });
 
 // Serve login HTML

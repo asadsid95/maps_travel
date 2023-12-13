@@ -1,20 +1,22 @@
 const jwt = require("jsonwebtoken");
 
-function insertUser(db, username, password, callback) {
-  db.serialize(() => {
-    const insertQuery = db.prepare(
-      "INSERT INTO users (username, password) VALUES (?,?)"
-    );
-    insertQuery.run([username, password], (err) => {
-      if (err) {
-        console.error("Error inserting user:", err);
-        callback(err);
-      } else {
-        console.log("User inserted successfully");
-        callback(null);
-      }
+function insertUser(db, username, password) {
+  return new Promise((resolve, reject) => {
+    db.serialize(() => {
+      const insertQuery = db.prepare(
+        "INSERT INTO users (username, password) VALUES (?,?)"
+      );
+      insertQuery.run([username, password], (err) => {
+        if (err) {
+          console.error("Error inserting user:", err);
+          reject(err);
+        } else {
+          console.log("User inserted successfully");
+          resolve();
+        }
+      });
+      insertQuery.finalize();
     });
-    insertQuery.finalize();
   });
 }
 

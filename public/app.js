@@ -25,7 +25,7 @@ formElement.addEventListener("submit", async (event) => {
   const refinedData = Object.fromEntries(formData.entries());
 
   // call to backend server
-  const response = await fetch("https://www.gocreate.ca/process", {
+  const response = await fetch("http://localhost:3000/process", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
