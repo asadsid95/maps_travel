@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 function insertUser(db, username, password) {
   return new Promise((resolve, reject) => {
@@ -20,32 +21,62 @@ function insertUser(db, username, password) {
   });
 }
 
-function checkUser(db, username, password, callback) {
-  const checkQuery = db.prepare("SELECT * FROM users WHERE username = ?");
+// Function to compare passwords using bcrypt
+async function comparePasswords(inputPassword, hashedPassword) {
+  try {
+    // Compare the input password with the hashed password using bcrypt
+    const match = await bcrypt.compare(inputPassword, hashedPassword);
 
-  const secretKey = process.env.SECRET_JWT || "hello-as-hard-coded";
+    return match;
+  } catch (error) {
+    console.error("Error comparing passwords:", error);
+    return false;
+  }
+}
 
-  checkQuery.get(username, (err, row) => {
-    if (err) {
-      console.error("Error finding user:", err);
-      callback(err, false, null);
-    } else {
-      if (row) {
-        console.log("User found successfully");
+function checkUser(db, username, inputPassword) {
+  return new Promise((resolve, reject) => {
+    const checkQuery = db.prepare("SELECT * FROM users WHERE username = ?");
 
-        // Generate a JWT with user information
-        const token = jwt.sign(
-          { userId: row.id, username: row.username },
-          secretKey,
-          { expiresIn: "1h" }
-        );
-
-        callback(null, true, token);
+    const secretKey = process.env.SECRET_JWT || "hello-as-hard-coded";
+    checkQuery.get(username, async (err, row) => {
+      if (err) {
+        console.error("Error finding user:", err);
+        reject(err);
       } else {
-        console.log("User not found");
-        callback(null, false, null);
+        if (row) {
+          console.log("User found successfully; checking password");
+
+          const passwordMatch = await comparePasswords(
+            inputPassword,
+            row.password
+          );
+          if (passwordMatch) {
+            // Generate a JWT with user information
+            const token = jwt.sign(
+              { userId: row.id, username: row.username },
+              secretKey,
+              { expiresIn: "1h" }
+            );
+
+            resolve({
+              success: true,
+              token: token,
+              message: "Password matched",
+            });
+          } else {
+            reject({
+              success: false,
+              token: null,
+              message: "Password didnt match",
+            });
+          }
+        } else {
+          reject({ success: false, token: null, message: "User not found" });
+        }
       }
-    }
+      checkQuery.finalize();
+    });
   });
 }
 

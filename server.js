@@ -128,7 +128,7 @@ app.get("/login", (req, res) => {
 });
 
 // user authentication
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   if (
@@ -144,26 +144,23 @@ app.post("/login", (req, res) => {
   /* 
     check if user exists
   */
-  user_table.checkUser(
-    db,
-    username,
-    password,
-    (err, isAuthenticated, token) => {
-      if (err) {
-        return res.status(500).json({ error: "Database error" });
-      }
 
-      if (isAuthenticated) {
-        res.status(200).json({ success: true, token });
-      } else {
-        res
-          .status(401)
-          .json({ success: false, error: "Authentication failed" });
-      }
+  try {
+    const result = await user_table.checkUser(db, username, password);
 
-      // res.status(200).json({ success: true });
+    if (result.success) {
+      return res
+        .status(200)
+        .json({ success: true, token: result.token, message: result.message });
+    } else {
+      return res
+        .status(401)
+        .json({ error: "Invalid credentials", message: result.message });
     }
-  );
+  } catch (err) {
+    console.error("Error during user logging in:", err);
+    return res.status(500).json({ error: "Database error", success: false });
+  }
 });
 
 app.get("/protected", (req, res) => {

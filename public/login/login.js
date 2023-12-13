@@ -18,36 +18,42 @@ async function handleSubmit(event) {
       },
       body: JSON.stringify({ username, password }),
     });
+    console.log(response);
     const readable_res = await response.json();
-
-    // console.log(readable_res.token);
-
+    console.log(readable_res);
     // placing token in local storage
     localStorage.setItem("accessToken", readable_res.token);
 
-    window.location.href = "/";
-    alert("Authentication successful");
+    if (response.ok) {
+      // Registration successful
+      window.location.href = "/";
+      // alert("Registration successful");
+    } else {
+      // Registration failed
+      const data = await response.json();
+      alert(`login failed: ${data.error}`);
+    }
   } catch (err) {
     console.log("[FE_ERROR]:", err);
     return err;
   }
 
-  let getToken = localStorage.getItem("accessToken");
+  // let getToken = localStorage.getItem("accessToken");
 
-  try {
-    const protected_route = await fetch("http://localhost:3000/protected", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getToken}`,
-      },
-    });
+  // try {
+  //   const protected_route = await fetch("http://localhost:3000/protected", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${getToken}`,
+  //     },
+  //   });
 
-    const readable_res = await protected_route.json();
-    console.log(readable_res);
-  } catch (err) {
-    console.log(err);
-  }
+  //   const readable_res = await protected_route.json();
+  //   console.log(readable_res);
+  // } catch (err) {
+  //   console.log(err);
+  // }
 
   // send to backend
 }
