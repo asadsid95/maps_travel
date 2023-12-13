@@ -33,6 +33,8 @@ formElement.addEventListener("submit", async (event) => {
     body: JSON.stringify(refinedData),
   });
 
+  event.target.reset();
+
   const result = await response.json();
   const corrected_coordinates = [
     result.corrected_coordinates[1],
@@ -51,4 +53,4 @@ let marker = L.circle([43.65, -79.39], {
   radius: 500,
 }).addTo(map);
 
-function user() {}
+function user() { }
