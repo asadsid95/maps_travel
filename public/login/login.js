@@ -10,11 +10,28 @@ async function handleSubmit(event) {
     alert("username or password is empty");
   }
 
+  const token = localStorage.getItem("accessToken");
+  console.log(token);
+
+  // check for jwt token already present; Yes -> make request to GET'/'???
+  // if (token !== undefined) { TODO check against null
+  //   console.log("you have a token");
+
+  //   // window.location.href = "/";
+  //   // await fetch("http://localhost:3000/", {
+  //   //   method: "GET",
+  //   //   headers: {
+  //   //     "Content-Type": "application/json",
+  //   //   },
+  //   // });
+  // } else {
+  // console.log("you have no token");
   try {
-    const response = await fetch("https://www.gocreate.ca/login", {
+    const response = await fetch("http://localhost:3000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ username, password }),
     });
@@ -25,11 +42,11 @@ async function handleSubmit(event) {
     localStorage.setItem("accessToken", readable_res.token);
 
     if (response.ok) {
-      // Registration successful
-      window.location.href = "/";
-      // alert("Registration successful");
+      // login successful
+      // window.location.href = "/"; //TODO uncomment for prod
+      // alert("login successful");
     } else {
-      // Registration failed
+      // login failed
       const data = await response.json();
       alert(`login failed: ${data.error}`);
     }
@@ -37,11 +54,12 @@ async function handleSubmit(event) {
     console.log("[FE_ERROR]:", err);
     return err;
   }
+  // }
 
   // let getToken = localStorage.getItem("accessToken");
 
   // try {
-  //   const protected_route = await fetch("https://www.gocreate.ca/protected", {
+  //   const protected_route = await fetch("http://localhost:3000/protected", {
   //     method: "GET",
   //     headers: {
   //       "Content-Type": "application/json",

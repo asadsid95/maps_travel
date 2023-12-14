@@ -25,7 +25,7 @@ registrationForm.addEventListener("submit", async (event) => {
 
   // Make a POST request to the server for user registration
   try {
-    const response = await fetch("https://www.gocreate.ca/registration", {
+    const response = await fetch("http://localhost:3000/registration", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ formData }),

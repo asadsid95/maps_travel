@@ -67,6 +67,7 @@ async function callGeocoding(location) {
   }
 }
 
+// how to make call to this if conditional viewing for pages routes to home page i.e. repeated /logins after logging in
 app.get("/", (req, res) => {
   return res.sendFile(path.join(__dirname, "/public/index.html"));
 });
@@ -122,8 +123,25 @@ app.post("/registration", async (req, res) => {
   }
 });
 
+/////////////////////////////
+//
+// Middleware for checking token to prevent repeat logins
+function restrictToLoggedIn(req, res, next) {
+  const token = req.headers.authorization;
+
+  if (token) {
+    console.log("working");
+    return res.sendFile(path.join(__dirname, "/public/index.html"));
+  }
+  next();
+}
+
+app.use("/login", restrictToLoggedIn);
+
 // Serve login HTML
 app.get("/login", (req, res) => {
+  console.log(req.headers.authorization);
+
   return res.sendFile(path.join(__dirname, "/public/login/login.html"));
 });
 
